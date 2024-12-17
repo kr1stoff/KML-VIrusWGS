@@ -1,17 +1,11 @@
 conda:
+  activate: /home/mengxf/miniforge3/bin/activate
   basic: basic
-  python: python3.8
-database:
-  3ltr: /data/mengxf/GitHub/KML-LVISA/assets/3LTR/3LTR.fa
-  hg19: /data/mengxf/Database/genome/hg19/hg19.fa
-metadata: /data/mengxf/Project/KML240924_lvis_pipeline/result/241031/.temp/metadata.tsv
-my_scripts: /data/mengxf/GitHub/KML-LVISA/scripts
+database: /data/mengxf/Database/genome/HBV/BVBRC/BVBRC_genome_sequence.fasta
 samples:
-- SRR17348516
-- SRR17405832
-- SRR17405845
-- SRR17405847
+- BD205
+- BD335
 threads:
   high: 32
   low: 8
-workdir: /data/mengxf/Project/KML240924_lvis_pipeline/result/241031
+workdir: /data/mengxf/Project/KML241212_HBV_WGS/result/241217

@@ -38,13 +38,13 @@ def copy_fastq(df, workdir) -> None:
         name, fq1, fq2 = row[1]
         if fq1.endswith('.gz'):
             cml = f"""
-            cp {fq1} {workdir}/.rawdata/{name}_1.fastq.gz
-            cp {fq2} {workdir}/.rawdata/{name}_2.fastq.gz
+            cp {fq1} {workdir}/.rawdata/{name}.1.fastq.gz
+            cp {fq2} {workdir}/.rawdata/{name}.2.fastq.gz
             """
         else:
             cml = f"""
-            gzip -c {fq1} > {workdir}/.rawdata/{name}_1.fastq.gz
-            gzip -c {fq2} > {workdir}/.rawdata/{name}_2.fastq.gz
+            gzip -c {fq1} > {workdir}/.rawdata/{name}.1.fastq.gz
+            gzip -c {fq2} > {workdir}/.rawdata/{name}.2.fastq.gz
             """
         logging.debug(cml)
         run(cml, shell=True, executable='/bin/bash', capture_output=True)
@@ -61,11 +61,11 @@ def copy_fastq_single(df, workdir) -> None:
         name, fq1 = row[1]
         if fq1.endswith('.gz'):
             cml = f"""
-            cp {fq1} {workdir}/.rawdata/{name}_1.fastq.gz
+            cp {fq1} {workdir}/.rawdata/{name}.1.fastq.gz
             """
         else:
             cml = f"""
-            gzip -c {fq1} > {workdir}/.rawdata/{name}_1.fastq.gz
+            gzip -c {fq1} > {workdir}/.rawdata/{name}.1.fastq.gz
             """
         logging.debug(cml)
         run(cml, shell=True, executable='/bin/bash', capture_output=True)

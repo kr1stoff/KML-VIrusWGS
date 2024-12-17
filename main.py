@@ -3,6 +3,7 @@ import click
 from pathlib import Path
 from kml_viruswgs import prepare_fastq_by_samptab
 from kml_viruswgs import get_sample_names_by_samptab
+from kml_viruswgs import create_snakemake_configfile
 
 
 logging.basicConfig(level=logging.DEBUG,
@@ -12,10 +13,10 @@ logging.basicConfig(level=logging.DEBUG,
 
 @click.command()
 @click.option('--sample_table', '-s', type=click.Path(exists=True), required=True, help='样本信息表.')
-@click.option('--references', '-r', type=click.Path(exists=True), required=True, help='参考基因组集 FASTA, 比如 HBV 的几百个基因组.')
+@click.option('--database', '-r', type=click.Path(exists=True), required=True, help='参考基因组集 FASTA, 比如 HBV 的几百个基因组.')
 @click.option('--work_dir', '-w', type=str, default='viruswgs_result', help='结果生成目录. [default: viruswgs_result]')
 @click.help_option('-h', '--help')
-def main(work_dir, sample_table):
+def main(work_dir, sample_table, database):
     """通用病毒全基因组分析流程"""
     logging.info(f'开始分析!')
     sample_table = Path(sample_table).resolve()
@@ -25,8 +26,9 @@ def main(work_dir, sample_table):
     sample_names = get_sample_names_by_samptab(sample_table)
     prepare_fastq_by_samptab(work_dir, sample_table)
 
+
     # todo snakemake
-    # create_snakemake_configfile(sample_names, work_dir)
+    create_snakemake_configfile(sample_names, work_dir, database)
     # run_snakemake(work_dir)
 
     logging.info(f'分析完成!')
