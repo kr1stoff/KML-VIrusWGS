@@ -123,7 +123,7 @@ def check_samptab(df) -> None:
     """
     logging.info('检查 sample table 文件, 输入 sample table 转的 DataFrame')
     for row in df.iterrows():
-        name, fastq1, fastq2 = row[1]
+        name, fastq1 = row[1][:2]
 
         # 检查名称
         pattern = r'[\\/:*?"<>| ]'
@@ -133,6 +133,7 @@ def check_samptab(df) -> None:
 
         # 双端检查
         if is_paired_end(df):
+            fastq2 = row[1][2]
             assert Path(fastq2).exists(), f'fastq2 不存在 : {fastq2}'
             # 检查 fastq1 和 fastq2 是否相同
             assert fastq1 != fastq2, f'fastq1 和 fastq2 相同 : {fastq1} - {fastq2}'

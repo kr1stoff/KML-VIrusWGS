@@ -4,12 +4,9 @@ from subprocess import run
 import logging
 from kml_viruswgs import get_conda_env_dict
 from kml_viruswgs import get_threads_dict
-from kml_viruswgs import get_my_scripts_path
-from kml_viruswgs import get_database_dict
-from kml_viruswgs import get_software_dict
 
 
-def create_snakemake_configfile(sample_names, workdir):
+def create_snakemake_configfile(sample_names, workdir, database):
     """
     创建 snakemake 配置文件
     :param sample_names:    样本名列表
@@ -24,10 +21,9 @@ def create_snakemake_configfile(sample_names, workdir):
     dict_smk = {
         'workdir': workdir,
         'samples': sample_names,
+        'database': database,
         'threads': get_threads_dict(),
         'conda': get_conda_env_dict(),
-        'my_scripts': get_my_scripts_path(),
-        'database': get_database_dict()
     }
 
     with open(f'{workdir}/.temp/snakemake.yaml', 'w') as f:
@@ -41,15 +37,14 @@ def run_snakemake(workdir):
     :return:
     """
     logging.info('运行 snakemake')
-    activate = get_software_dict()['activate']
+    activate = get_conda_env_dict()['activate']
     cores = get_threads_dict()['high']
-    snakefile = Path(__file__).resolve().parents[1].joinpath('wf-lvisa/Snakefile')
+    snakefile = Path(__file__).resolve().parents[1].joinpath('wf-viruswgs/Snakefile')
     configfile = f'{workdir}/.temp/snakemake.yaml'
     logfile = f'{workdir}/.log/snakemake.log'
 
     cml = f"""
     source {activate} snakemake
-    # use-conda
     snakemake -c {cores} --use-conda -s {snakefile} --configfile {configfile}
     """
 

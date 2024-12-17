@@ -1,0 +1,13 @@
+workdir: config["workdir"]
+
+
+shell.executable("/bin/bash")
+shell.prefix("set +eu; ")
+
+
+include: ""
+
+
+rule all:
+    input:
+        "",
