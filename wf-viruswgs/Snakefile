@@ -14,11 +14,18 @@ include: "rules/fastqc.smk"
 include: "rules/fastp.smk"
 include: "rules/multiqc.smk"
 include: "rules/find.smk"
+include: "rules/type.smk"
 include: "rules/align.smk"
+include: "rules/depth.smk"
+include: "rules/variant.smk"
 
 
 rule all:
     input:
         "qc/fastp/fastp.stats.tsv",
         "qc/multiqc.html",
-        expand("align/{sample}.coverage", sample=config["samples"]),
+        expand("type/{sample}.type", sample=config["samples"]),
+        expand("depth/{sample}.depth.tsv", sample=config["samples"]),
+        expand("depth/{sample}.depth.png", sample=config["samples"]),
+        expand("depth/{sample}.low_depth.bed", sample=config["samples"]),
+        expand("variants/{sample}.tsv", sample=config["samples"]),

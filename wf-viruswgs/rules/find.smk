@@ -1,7 +1,9 @@
 rule bwa_mem_datasets_se:
     input:
         reads=["qc/fastp/{sample}.1.fastq"],
-        idx=multiext(config["database"], ".amb", ".ann", ".bwt", ".pac", ".sa"),
+        idx=multiext(
+            config["database"]["datasets"], ".amb", ".ann", ".bwt", ".pac", ".sa"
+        ),
     output:
         "find/{sample}.bam",
     log:
@@ -52,10 +54,12 @@ rule find_ref:
         "logs/find/{sample}_find_ref.bm"
     conda:
         config["conda"]["basic"]
+    params:
+        extra="-k coverage:nr -k numreads:nr",
     shell:
         """
-        csvtk -t -C '' sort -k coverage:nr -k meanmapq:nr {input} | sed '1d' | head -n1 | cut -f1 >{output.most_similar}
-        seqtk subseq {config[database]} {output.most_similar} >{output.ref}
+        csvtk -t -C '' sort {params.extra} {input} | sed '1d' | head -n1 | cut -f1 >{output.most_similar}
+        seqtk subseq {config[database][datasets]} {output.most_similar} >{output.ref}
         """
 
 

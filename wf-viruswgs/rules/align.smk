@@ -27,6 +27,19 @@ use rule samtools_coverage_datasets as samtools_coverage_ref with:
         "logs/align/{sample}_samtools_coverage_ref.bm"
 
 
-rule samtools_depth:
+rule samtools_index:
     input:
         "align/{sample}.bam",
+    output:
+        "align/{sample}.bam.bai",
+    log:
+        "logs/align/{sample}.samtools_index.log",
+    benchmark:
+        "logs/align/{sample}.samtools_index.bm"
+    params:
+        extra="",  # optional params string
+    threads: config["threads"]["low"]  # This value - 1 will be sent to -@
+    conda:
+        config["conda"]["basic"]
+    wrapper:
+        f"file:{workflow.basedir}/wrappers/bio/samtools/index"

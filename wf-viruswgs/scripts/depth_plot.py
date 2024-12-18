@@ -2,27 +2,17 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib
+import sys
 matplotlib.use('Agg')
 
 
-def get_bam_stat():
-    # 分类数据
+sys.stderr = open(snakemake.log[0], "w")
+
+
+def plot_coverage_chart(in_depth, out_chart) -> None:
+    # 输入数据
     df = pd.read_table(in_depth, sep='\t', header=None)
-    df.columns = ['Ref', 'Pos', 'Base', 'Depth']
-    # 深度统计表格
-    meandepth = '{:.1f}'.format(df['Depth'].mean())
-    coverage0 = '{:.2%}'.format(len(df[df['Depth'] > 0])/df.shape[0])
-    coverage10 = '{:.2%}'.format(len(df[df['Depth'] > 10])/df.shape[0])
-    coverage30 = '{:.2%}'.format(len(df[df['Depth'] > 30])/df.shape[0])
-    coverage100 = '{:.2%}'.format(len(df[df['Depth'] > 100])/df.shape[0])
-    uniformity = '{:.2%}'.format(len(df[df['Depth'] > df['Depth'].mean()*0.2])/df.shape[0])
-    with open(out_bamstat, 'w') as g:
-        g.write('平均深度\t覆盖度\t深度≥10x\t深度≥30x\t深度≥100x\t均一性\n')
-        g.write('\t'.join([meandepth, coverage0, coverage10, coverage30, coverage100, uniformity]) + '\n')
-    return df
-
-
-def plot_coverage_chart():
+    df.columns = ['Ref', 'Pos', 'Depth']
     # 50个区间
     lbls = [f'bin{i}' for i in range(1, 51)]
     df['Bin'] = pd.cut(df['Pos'], 50, labels=lbls)
@@ -48,7 +38,8 @@ def plot_coverage_chart():
     ax2 = ax.twinx()
     ax2.set_ylim(0, max(dfgrpmean['Depth']))
     ax2.plot(dfgrpmean.index, dfgrpmean['Depth'], color='r', lw=0.8, label='Average Depth')
-    ax2.plot(dfgrpmedian.index, dfgrpmedian['Depth'], color='yellow', lw=1, label='Median Depth', ls='--')
+    ax2.plot(dfgrpmedian.index, dfgrpmedian['Depth'],
+             color='yellow', lw=1, label='Median Depth', ls='--')
     # 将次坐标轴设置为红色
     ax2.tick_params(axis='y', colors='red')
     ax2.tick_params(axis='x', colors='w')
@@ -65,14 +56,11 @@ def plot_coverage_chart():
     ax2.set_ylabel('Depth', fontsize=12)
     legend = plt.legend(loc=1)  # 图例的位置，1为右上角
     # 输出
-    plt.savefig(out_coverchart)
+    plt.savefig(out_chart)
     plt.cla()
     plt.close(fig)
 
 
-if __name__ == '__main__':
-    in_depth = snakemake.input[0]
-    out_bamstat = snakemake.output[0]
-    out_coverchart = snakemake.output[1]
-    df = get_bam_stat()
-    plot_coverage_chart()
+in_tab = snakemake.input[0]
+out_chart = snakemake.output[0]
+plot_coverage_chart(in_tab, out_chart)

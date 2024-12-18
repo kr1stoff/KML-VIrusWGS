@@ -6,7 +6,7 @@ from kml_viruswgs import get_conda_env_dict
 from kml_viruswgs import get_threads_dict
 
 
-def create_snakemake_configfile(sample_names, workdir, database):
+def create_snakemake_configfile(sample_names, workdir, database, acc_type):
     """
     创建 snakemake 配置文件
     :param sample_names:    样本名列表
@@ -21,7 +21,7 @@ def create_snakemake_configfile(sample_names, workdir, database):
     dict_smk = {
         'workdir': workdir,
         'samples': sample_names,
-        'database': database,
+        'database': {'datasets': database, 'acc_type': acc_type},
         'threads': get_threads_dict(),
         'conda': get_conda_env_dict(),
     }

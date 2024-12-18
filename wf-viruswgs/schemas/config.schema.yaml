@@ -17,7 +17,15 @@ properties:
       - basic
 
   database:
-    type: string
+    type: object
+    properties:
+      acc_type:
+        type: string
+      datasets:
+        type: string
+    required:
+      - acc_type
+      - datasets
 
   samples:
     type: array
