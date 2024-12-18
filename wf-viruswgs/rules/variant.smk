@@ -1,4 +1,4 @@
-rule bedtools_maskfast:
+rule bedtools_maskfasta:
     input:
         low_depth=rules.low_depth_region.output,
         raw_ref=rules.find_ref.output.ref,
@@ -16,7 +16,7 @@ rule bedtools_maskfast:
 
 rule samtools_faidx:
     input:
-        rules.bedtools_maskfast.output,
+        rules.bedtools_maskfasta.output,
     output:
         "variants/{sample}.masked.fa.fai",
     log:
@@ -35,7 +35,7 @@ rule freebayes:
     input:
         alns="align/{sample}.bam",
         idxs=rules.samtools_index.output,
-        ref=rules.bedtools_maskfast.output,
+        ref=rules.bedtools_maskfasta.output,
         # ! 这个参考要先建索引,不然会报错, 虽然这个参数没用
         fai=rules.samtools_faidx.output,
     output:

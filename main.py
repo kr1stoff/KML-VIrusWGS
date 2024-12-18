@@ -4,6 +4,7 @@ from pathlib import Path
 from kml_viruswgs import prepare_fastq_by_samptab
 from kml_viruswgs import get_sample_names_by_samptab
 from kml_viruswgs import create_snakemake_configfile
+from kml_viruswgs import run_snakemake
 
 
 logging.basicConfig(level=logging.DEBUG,
@@ -29,7 +30,7 @@ def main(work_dir, sample_table, database, acc_type):
 
     # todo snakemake
     create_snakemake_configfile(sample_names, work_dir, database, acc_type)
-    # run_snakemake(work_dir)
+    run_snakemake(work_dir)
 
     logging.info(f'分析完成!')
 

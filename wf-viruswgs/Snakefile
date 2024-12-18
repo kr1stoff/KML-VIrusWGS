@@ -18,6 +18,7 @@ include: "rules/type.smk"
 include: "rules/align.smk"
 include: "rules/depth.smk"
 include: "rules/variant.smk"
+include: "rules/consensus.smk"
 
 
 rule all:
@@ -29,3 +30,4 @@ rule all:
         expand("depth/{sample}.depth.png", sample=config["samples"]),
         expand("depth/{sample}.low_depth.bed", sample=config["samples"]),
         expand("variants/{sample}.tsv", sample=config["samples"]),
+        expand("consensus/{sample}.consensus.fa", sample=config["samples"]),
