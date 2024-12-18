@@ -1,6 +1,6 @@
 from snakemake.utils import validate
 
-validate(config, schema="../schemas/config.schema.yaml")
+validate(config, schema="schemas/config.schema.yaml")
 
 
 workdir: config["workdir"]
@@ -10,13 +10,15 @@ shell.executable("/bin/bash")
 shell.prefix("set +eu; ")
 
 
-include: "rules/common.smk"
 include: "rules/fastqc.smk"
 include: "rules/fastp.smk"
 include: "rules/multiqc.smk"
+include: "rules/find.smk"
+include: "rules/align.smk"
 
 
 rule all:
     input:
         "qc/fastp/fastp.stats.tsv",
         "qc/multiqc.html",
+        expand("align/{sample}.coverage", sample=config["samples"]),
