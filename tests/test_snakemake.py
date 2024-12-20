@@ -3,8 +3,8 @@ from kml_viruswgs import get_sample_names_by_samptab
 from kml_viruswgs import run_snakemake
 
 
-work_dir = '/data/mengxf/Project/KML241212_HBV_WGS/result/241217'
-sample_table = '/data/mengxf/GitHub/KML-VirusWGS/templates/input.tsv'
+work_dir = '/data/mengxf/Project/KML241212_HBV_WGS/result/241218'
+sample_table = '/data/mengxf/Project/KML241212_HBV_WGS/input.tsv'
 database = '/data/mengxf/Database/genome/HBV/BVBRC/BVBRC_genome_sequence.fasta'
 acc_type = '/data/mengxf/Database/genome/HBV/BVBRC/accession_type_comparison.json'
 

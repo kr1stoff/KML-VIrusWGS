@@ -37,8 +37,12 @@ rule bcftools_consensus:
     input:
         vcf=rules.bgzip.output,
         ref=rules.bedtools_maskfasta.output,
+        # * 不用这个参数, 但是要建索引
+        csi=rules.bcftools_index.output,
     output:
-        "consensus/{sample}.consensus.fa",
+        cons1="consensus/{sample}.rawcons.fa",
+        cons2="consensus/{sample}.consensus.fa",
+        noIUPAC="consensus/{sample}.no_IUPAC_masked.fa",
     log:
         "logs/consensus/{sample}.consensus.log",
     benchmark:
@@ -49,5 +53,7 @@ rule bcftools_consensus:
         extra="--haplotype A",  # optional parameters for bcftools consensus
     shell:
         """
-        bcftools consensus {params.extra} -p {wildcards.sample}_ -f {input.ref} -o {output} {input.vcf}
+        awk '/>/ {{print; next}} {{gsub(/[rywskmhbvd]/,"N"); print}}' {input.ref} > {output.noIUPAC} 2> {log}
+        bcftools consensus {params.extra} -p {wildcards.sample}_ -f {output.noIUPAC} -o {output.cons1} {input.vcf} 2>> {log}
+        sed 's/_.*//' {output.cons1} > {output.cons2} 2>> {log}
         """

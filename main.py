@@ -15,7 +15,8 @@ logging.basicConfig(level=logging.DEBUG,
 @click.command()
 @click.option('--sample_table', '-s', type=click.Path(exists=True), required=True, help='样本信息表.')
 @click.option('--database', '-r', type=click.Path(exists=True), required=True, help='参考基因组集 FASTA, 比如 HBV 的几百个基因组.')
-@click.option('--acc_type', '-t', type=str, required=True, help='参考基因组集的分型对照表, 里面记载 database 参数中所有基因组登录号对应的分型.')
+@click.option('--acc_type', '-t', type=click.Path(exists=True), required=True,
+              help='参考基因组集的分型对照表, 里面记载 database 参数中所有基因组登录号对应的分型.')
 @click.option('--work_dir', '-w', type=str, default='viruswgs_result', help='结果生成目录. [default: viruswgs_result]')
 @click.help_option('-h', '--help')
 def main(work_dir, sample_table, database, acc_type):

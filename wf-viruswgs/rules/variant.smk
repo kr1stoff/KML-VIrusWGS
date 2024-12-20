@@ -36,7 +36,7 @@ rule freebayes:
         alns="align/{sample}.bam",
         idxs=rules.samtools_index.output,
         ref=rules.bedtools_maskfasta.output,
-        # ! 这个参考要先建索引,不然会报错, 虽然这个参数没用
+        # * 不用这个参数, 但是要建索引
         fai=rules.samtools_faidx.output,
     output:
         vcf="variants/{sample}.vcf",

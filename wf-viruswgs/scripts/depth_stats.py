@@ -17,7 +17,7 @@ def get_bam_stat(in_depth, out_stat) -> None:
     coverage100 = '{:.2%}'.format(len(df[df['Depth'] > 100])/df.shape[0])
     uniformity = '{:.2%}'.format(len(df[df['Depth'] > df['Depth'].mean()*0.2])/df.shape[0])
     with open(out_stat, 'w') as g:
-        g.write('平均深度\t覆盖度\t深度≥10x\t深度≥30x\t深度≥100x\t均一性\n')
+        g.write('MeanDepth\tCoverage\tDepth ≥10x\tDepth ≥30x\tDepth ≥100x\tUniformity\n')
         g.write('\t'.join([meandepth, coverage0, coverage10,
                 coverage30, coverage100, uniformity]) + '\n')
 
