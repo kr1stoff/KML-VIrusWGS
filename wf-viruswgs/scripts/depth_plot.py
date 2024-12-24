@@ -9,6 +9,13 @@ matplotlib.use('Agg')
 sys.stderr = open(snakemake.log[0], "w")
 
 
+def get_plot_title(df) -> tuple:
+    """获取登录号和覆盖度, 输出图标的标题"""
+    acc = str(df.iloc[0, 0]).replace('accn|', '')
+    cov = '{:.2%}'.format(len(df[df['Depth'] > 0])/df.shape[0])
+    return f'{acc} Coverage Chart (Coverage: {cov})'
+
+
 def plot_coverage_chart(in_depth, out_chart) -> None:
     # 输入数据
     df = pd.read_table(in_depth, sep='\t', header=None)
@@ -55,6 +62,8 @@ def plot_coverage_chart(in_depth, out_chart) -> None:
     ax.set_ylabel('Mapped reads', fontsize=12)
     ax2.set_ylabel('Depth', fontsize=12)
     legend = plt.legend(loc=1)  # 图例的位置，1为右上角
+    # 标题
+    plt.title(get_plot_title(df), fontsize=16)
     # 输出
     plt.savefig(out_chart)
     plt.cla()

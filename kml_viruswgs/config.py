@@ -29,6 +29,6 @@ def get_threads_dict() -> dict:
     # * 当前最大线程32, high 16, low 4
     high_threads = math.floor(max_threads / 2)
     low_threads = math.floor(high_threads / 4)
-    dict_thr = {'high': high_threads, 'low': low_threads}
+    dict_thr = {'high': high_threads, 'low': low_threads, 'max': max_threads}
 
     return dict_thr
