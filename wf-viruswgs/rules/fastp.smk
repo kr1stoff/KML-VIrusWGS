@@ -16,6 +16,8 @@ rule fastp_se:
     params:
         extra="-q 15 -u 40 -l 15 --cut_right --cut_window_size 4 --cut_mean_quality 20 --correction",
     threads: config["threads"]["low"]
+    conda:
+        config["conda"]["basic"]
     wrapper:
         f"file:{workflow.basedir}/wrappers/bio/fastp"
 
