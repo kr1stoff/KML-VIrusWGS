@@ -5,7 +5,7 @@
 ## 命令行
 
 ```bash
-
+poetry -C /data/mengxf/GitHub/KML-VirusWGS run python /data/mengxf/GitHub/KML-VirusWGS/main.py -s input.tsv -r /data/mengxf/Database/genome/HBV/BVBRC/BVBRC_genome_sequence.fasta -t /data/mengxf/Database/genome/HBV/BVBRC/accession_type_comparison.json -w result/241218
 ```
 
 ## 解释

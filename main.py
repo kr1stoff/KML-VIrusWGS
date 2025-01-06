@@ -29,7 +29,6 @@ def main(work_dir, sample_table, database, acc_type):
     sample_names = get_sample_names_by_samptab(sample_table)
     prepare_fastq_by_samptab(work_dir, sample_table)
 
-    # todo snakemake
     create_snakemake_configfile(sample_names, work_dir, database, acc_type)
     run_snakemake(work_dir)
 
